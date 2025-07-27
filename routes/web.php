@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 class Task
@@ -55,20 +56,25 @@ $tasks = [
     ),
 ];
 
-Route::get('/', function () {
-   return view('index', [
-    'name' => 'Piotr'
-   ]);
-});
+Route::get('/', function (){
+    return redirect()->route("tasks.index");
+ });
 
-Route::get('/', function () use ($tasks) {
+Route::get('/tasks', function () use ($tasks) {
     return view('index', [
      'tasks' => $tasks
     ]);
  })->name('tasks.index');
 
- Route::get('/{id}', function ($id) {
-    return 'One single task';
+ Route::get('/tasks/{id}', function ($id) use ($tasks) {
+    //converts arrays to a laravel collection object, which lets you call methods
+    $task = collect($tasks)->firstWhere('id', $id);
+
+    if(!$task){
+        abort(Response::HTTP_NOT_FOUND);
+    }
+
+    return view('show', ['task' => $task]);
  })->name('tasks.show');
 
 
