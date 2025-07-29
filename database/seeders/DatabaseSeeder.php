@@ -13,11 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        //Specifies how many models we want to create
+        //adds data on top of pre existing data using factory settings defined in UserFactory.php
+        User::factory(10)->create();
+        \App\Models\User::factory(2)->unverified()->create();
+        \App\Models\Task::factory(20)->create();
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

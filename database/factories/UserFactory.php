@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
+//generates fake data for our table
 class UserFactory extends Factory
 {
     /**
@@ -35,6 +36,7 @@ class UserFactory extends Factory
     /**
      * Indicate that the model's email address should be unverified.
      */
+    // generates unverified emails
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
