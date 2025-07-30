@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 
 
 Route::get('/', function () {
@@ -13,6 +15,11 @@ Route::get('/tasks', function () {
     ]);
 })->name('tasks.index');
 
+//This route needs to go above the /tasks/id route otherwise it will be caught
+//, thinking that "create" is an id
+Route::view('tasks/create', 'create')
+->name('tasks.create');
+
 Route::get('/tasks/{id}', function ($id) {
     //find is an inbuilt method which lets you fetch a row from the database
     return view('show', [
@@ -20,6 +27,10 @@ Route::get('/tasks/{id}', function ($id) {
         'task' => \App\Models\Task::findOrFail($id)
     ]);
 })->name('tasks.show');
+
+Route::post('/tasks', function (Request $request) {
+    dd($request->all());
+})->name('tasks.store');
 
 
 // Route::get('/xxx', function () {
