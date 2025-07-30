@@ -43,7 +43,11 @@ Route::post('/tasks', function (Request $request) {
 
     $task->save();
 
-    return redirect()->route('tasks.show', ['id' => $task->id]);
+    return redirect()->route('tasks.show', ['id' => $task->id])
+    // "with" method lets you set session data
+    //here we're setting variable called "success" which we parse into app.blade.php
+    //is a flash temporary message to show message after redirect (task saved)
+    ->with('success', 'Task created successfully!');
 })->name('tasks.store');
 
 
