@@ -13,4 +13,16 @@
 
     <p>{{ $task->created_at }}</p>
     <p>{{ $task->updated_at }}</p>
+
+    <div>
+        {{-- builds form as /tasks/3 for example --}}
+        <form action="{{ route('tasks.destroy', ['task' => $task->id]) }}" method="POST">
+            {{-- generates a CSRF token for protection against cross-site request forgery. --}}
+        @csrf
+        {{-- tells Laravel to treat this POST request as a DELETE request
+            because HTML forms can only do GET or POST. To do a DELETE, you spoof the method using: --}}
+        @method('DELETE')
+        <button type="submit">Delete</button>
+        </form>
+    </div>
 @endsection

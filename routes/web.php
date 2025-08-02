@@ -49,15 +49,22 @@ Route::post('/tasks', function (TaskRequest $request) {
 })->name('tasks.store');
 
 Route::put('/tasks/{task}', function (Task $task, TaskRequest $request) {
-
     $task->update($request->validated());
-
     return redirect()->route('tasks.show', ['task' => $task->id])
     // "with" method lets you set session data
     //here we're setting variable called "success" which we parse into app.blade.php
     //is a flash temporary message to show message after redirect (task saved)
     ->with('success', 'Task updated successfully!');
 })->name('tasks.update');
+
+//fetch task using route model binding
+Route::delete('/tasks/{task}', function (Task $task) {
+    //then delete it
+    $task->delete();
+
+    return redirect()->route('tasks.index')
+        ->with('success', 'Task deleted successfully!');
+})->name('tasks.destroy');
 // Route::get('/xxx', function () {
 //     return "Hello";
 // })->name('hello');
