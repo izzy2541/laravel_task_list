@@ -13,7 +13,7 @@
 
 @section('content')
 {{$errors}}
-    <form method="POST" action="{{ route('tasks.update', ['id' => $task->id]) }}">
+    <form method="POST" action="{{ route('tasks.update', ['task' => $task->id]) }}">
         {{-- csrf is a middleware that protects users from malicious websote requests --}}
         @csrf
         {{-- form method attribute can only be post or get in this instance, so we need to set PUT this way instead --}}

@@ -3,6 +3,7 @@
 use App\Models\Task;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
 
 
 
@@ -21,57 +22,37 @@ Route::get('/tasks', function () {
 Route::view('tasks/create', 'create')
 ->name('tasks.create');
 
-Route::get('/tasks/{id}/edit', function ($id) {
+Route::get('/tasks/{task}/edit', function (Task $task) {
     //find is an inbuilt method which lets you fetch a row from the database
     return view('edit', [
         //find or fail will return 404 page if nothing can be found
-        'task' => Task::findOrFail($id)
+        'task' => $task
     ]);
 })->name('tasks.edit');
 
-Route::get('/tasks/{id}', function ($id) {
+Route::get('/tasks/{task}', function (Task $task) {
     //find is an inbuilt method which lets you fetch a row from the database
     return view('show', [
         //find or fail will return 404 page if nothing can be found
-        'task' => Task::findOrFail($id)
+        'task' => $task
     ]);
 })->name('tasks.show');
 
-Route::post('/tasks', function (Request $request) {
-    $data = $request->validate([
-        'title' => 'required|max:225',
-        'description' => 'required',
-        'long_description' => 'required'
-    ]);
+Route::post('/tasks', function (TaskRequest $request) {
+    $task = Task::create($request->validated());
 
-    $task = new Task;
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
-
-    $task->save();
-
-    return redirect()->route('tasks.show', ['id' => $task->id])
+    return redirect()->route('tasks.show', ['task' => $task->id])
     // "with" method lets you set session data
     //here we're setting variable called "success" which we parse into app.blade.php
     //is a flash temporary message to show message after redirect (task saved)
     ->with('success', 'Task created successfully!');
 })->name('tasks.store');
 
-Route::put('/tasks/{id}', function ($id, Request $request) {
-    $data = $request->validate([
-        'title' => 'required|max:225',
-        'description' => 'required',
-        'long_description' => 'required'
-    ]);
+Route::put('/tasks/{task}', function (Task $task, TaskRequest $request) {
 
-    $task = Task::findOrFail($id);
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
-    $task->save();
+    $task->update($request->validated());
 
-    return redirect()->route('tasks.show', ['id' => $task->id])
+    return redirect()->route('tasks.show', ['task' => $task->id])
     // "with" method lets you set session data
     //here we're setting variable called "success" which we parse into app.blade.php
     //is a flash temporary message to show message after redirect (task saved)
