@@ -18,7 +18,7 @@
             @method('PUT')
         @endisset
 
-        <div>
+        <div class="mb-4">
             <label for="title">Title</label>
             @error('title')
                 <p class="error-message">{{ $message }}</p>
@@ -26,7 +26,7 @@
             <input type="text" name="title" id="title" value="{{ old('title', $task->title ?? '') }}"/>
         </div>
 
-        <div>
+        <div class="mb-4">
             <label for="description">Description</label>
             <textarea name="description" id="description" rows="5">{{ old('description', $task->description ?? '') }}</textarea>
             @error('description')
@@ -34,7 +34,7 @@
             @enderror
         </div>
 
-        <div>
+        <div class="mb-4">
             <label for="long_description">Long Description</label>
             <textarea name="long_description" id="long_description" rows="10">{{ old('long_description', $task->long_description ?? '') }}</textarea>
             @error('long_description')
